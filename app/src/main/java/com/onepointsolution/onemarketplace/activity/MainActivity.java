@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private TextView txtRegId, txtMessage;
 
+    //TODO: Move all this buttons to Android Sliding Menu using Navigation Drawer
+    //ref: https://www.androidhive.info/2013/11/android-sliding-menu-using-navigation-drawer/
     private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
             changeEmail, changePassword, sendEmail, remove, signOut;
 

@@ -13,16 +13,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".activity.ResetPasswordActivity"></activity>
         <activity android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"/>
+        <activity android:name=".activity.HomeActivity"
+            android:label="@string/nav_home"/>
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"/>
         <activity android:name=".activity.SignupActivity"
-            android:label="@string/action_sign_in_short">
-            <intent-filter>
+            android:label="@string/app_name">
+            <intent-filter android:label="@string/action_sign_in_short">
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

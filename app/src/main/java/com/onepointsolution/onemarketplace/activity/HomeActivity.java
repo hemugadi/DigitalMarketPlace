@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +30,18 @@ import com.onepointsolution.onemarketplace.fragment.NotificationsFragment;
 import com.onepointsolution.onemarketplace.fragment.SettingsFragment;
 import com.onepointsolution.onemarketplace.utils.CircleTransform;
 
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener {
+    private static final String TAG = HomeActivity.class.getSimpleName();
+
+    // TODO - insert your themoviedb.org API KEY here
+    private final static String API_KEY = "16851db008592ce744b08c0c34f2b4a2";
+
     // Adding navigation drawable functionality
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -102,6 +114,12 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
             navItemIndex = 0;
             CURRENT_TAG = TAG_HOME;
             loadHomeFragment();
+        }
+
+        //Api calling
+        if (API_KEY.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Please obtain your API KEY first from themoviedb.org", Toast.LENGTH_LONG).show();
+            return;
         }
     }
 

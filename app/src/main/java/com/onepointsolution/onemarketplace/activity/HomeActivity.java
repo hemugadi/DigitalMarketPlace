@@ -26,6 +26,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.onepointsolution.onemarketplace.R;
 import com.onepointsolution.onemarketplace.fragment.HomeFragment;
+import com.onepointsolution.onemarketplace.fragment.MoviesFragment;
+import com.onepointsolution.onemarketplace.fragment.NewsFragment;
 import com.onepointsolution.onemarketplace.fragment.NotificationsFragment;
 import com.onepointsolution.onemarketplace.fragment.SettingsFragment;
 import com.onepointsolution.onemarketplace.utils.CircleTransform;
@@ -36,7 +38,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener {
+public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener,
+        NewsFragment.OnFragmentInteractionListener, MoviesFragment.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener,NotificationsFragment.OnFragmentInteractionListener{
     private static final String TAG = HomeActivity.class.getSimpleName();
 
     // TODO - insert your themoviedb.org API KEY here
@@ -60,7 +64,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
 
     // tags used to attach the fragments
     private static final String TAG_HOME = "home";
-    private static final String TAG_PHOTOS = "photos";
+    private static final String TAG_NEWS = "news";
     private static final String TAG_MOVIES = "movies";
     private static final String TAG_NOTIFICATIONS = "notifications";
     private static final String TAG_SETTINGS = "settings";
@@ -207,17 +211,17 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                // home
+                // home fragment
                 HomeFragment homeFragment = new HomeFragment();
                 return homeFragment;
             case 1:
-                // photos
-               /* PhotosFragment photosFragment = new PhotosFragment();
-                return photosFragment;*/
+                // news fragment
+                NewsFragment newsFragment = new NewsFragment();
+                return newsFragment;
             case 2:
                 // movies fragment
-                /*MoviesFragment moviesFragment = new MoviesFragment();
-                return moviesFragment;*/
+                MoviesFragment moviesFragment = new MoviesFragment();
+                return moviesFragment;
             case 3:
                 // notifications fragment
                 NotificationsFragment notificationsFragment = new NotificationsFragment();
@@ -255,9 +259,9 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_HOME;
                         break;
-                    case R.id.nav_photos:
+                    case R.id.nav_news:
                         navItemIndex = 1;
-                        CURRENT_TAG = TAG_PHOTOS;
+                        CURRENT_TAG = TAG_NEWS;
                         break;
                     case R.id.nav_movies:
                         navItemIndex = 2;
@@ -285,7 +289,6 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                         navItemIndex = 0;
                 }
 
-                //Checking if the item is in checked state or not, if not make it in checked state
                 if (menuItem.isChecked()) {
                     menuItem.setChecked(false);
                 } else {
@@ -293,7 +296,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                 }
                 menuItem.setChecked(true);
 
-               // loadHomeFragment();
+                loadHomeFragment();
 
                 return true;
             }

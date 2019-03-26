@@ -48,7 +48,7 @@
 
     <!-- Navigation Drawer menu labels -->
     <string name="nav_home">Home</string>
-    <string name="nav_photos">Photos</string>
+    <string name="nav_news">News</string>
     <string name="nav_movies">Movies</string>
     <string name="nav_notifications">Notifications</string>
     <string name="nav_settings">Settings</string>
@@ -57,7 +57,7 @@
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
         <item>Home</item>
-        <item>Photos</item>
+        <item>News</item>
         <item>Movies</item>
         <item>Notifications</item>
         <item>Settings</item>
@@ -69,7 +69,12 @@
     <string name="action_logout">Logout</string>
     <string name="action_mark_all_read">Mark All as Read</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="hello_blank_fragment">Hello..Welcome to blank fragment.</string>
+    <string name="hello_home_fragment">Hello..Welcome to Home fragment.</string>
+    <string name="hello_news_fragment">Hello..Welcome to news fragment.</string>
+    <string name="hello_movies_fragment">Hello..Welcome to movies fragment.</string>
+    <string name="hello_settings_fragment">Hello..Welcome to settings fragment.</string>
+    <string name="hello_notification_fragment">Hello..Welcome to notification fragment.</string>
+    <string name="hello_categories_fragment">Hello..Welcome to categories fragment.</string>
 
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>

@@ -4,11 +4,31 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.onepointsolution.onemarketplace.R;
+import com.onepointsolution.onemarketplace.adapter.ArticleAdapter;
+import com.onepointsolution.onemarketplace.model.Article;
+import com.onepointsolution.onemarketplace.model.ArticlesResponse;
+import com.onepointsolution.onemarketplace.rest.ApiClient;
+import com.onepointsolution.onemarketplace.rest.ApiInterface;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.support.constraint.Constraints.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +43,13 @@ public class NewsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private final static String NEWS_API_KEY = "c0c9714034614fbb858a064d1129d23a";
+    private final static String COUNTRY_ISO ="in";
+
+    private TextView mTextViewEmpty;
+    private ProgressBar mProgressBarLoading;
+    private ImageView mImageViewEmpty;
+    private RecyclerView mRecyclerView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,7 +92,39 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news, container, false);
+       // return inflater.inflate(R.layout.fragment_news, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_news, container, false);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mTextViewEmpty = (TextView)view.findViewById(R.id.textViewEmpty);
+        mImageViewEmpty = (ImageView)view.findViewById(R.id.imageViewEmpty);
+        mProgressBarLoading = (ProgressBar)view.findViewById(R.id.progressBarLoading);
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ArticlesResponse> call = apiService.getTopHeadLines(COUNTRY_ISO,NEWS_API_KEY);
+        call.enqueue(new Callback<ArticlesResponse>() {
+            @Override
+            public void onResponse(Call<ArticlesResponse> call, Response<ArticlesResponse> response) {
+                int statusCode = response.code();
+                List<Article> news = response.body().getArticles();
+                mRecyclerView.setAdapter(new ArticleAdapter(news, R.layout.list_item_article, getContext().getApplicationContext()));
+            }
+
+            @Override
+            public void onFailure(Call<ArticlesResponse> call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,6 +1,9 @@
 package com.onepointsolution.onemarketplace.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.onepointsolution.onemarketplace.R;
+import com.onepointsolution.onemarketplace.activity.news.ArticalDetailsActivity;
 import com.onepointsolution.onemarketplace.model.Article;
 
 import java.util.List;
@@ -54,7 +58,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
 
     @Override
-    public void onBindViewHolder(ArticleViewHolder holder, final int position) {
+    public void onBindViewHolder(final ArticleViewHolder holder, final int position) {
         Glide.with(context).load(Article.get(position).getUrlToImage())
                 .thumbnail(0.5f)
                 .crossFade()
@@ -63,6 +67,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         holder.articleTitle.setText(Article.get(position).getTitle());
         holder.publishData.setText(Article.get(position).getPublishedAt());
         holder.articleDescription.setText(Article.get(position).getDescription());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ArticalDetailsActivity.class);
+                intent.putExtra(ArticalDetailsActivity.ARTICLE_DETAIL, Article.get(position));
+                /*ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,
+                                holder.articleThumbnail, "poster");*/
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -6,7 +6,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.onepointsolution.onemarketplace.activity.MainActivity;
+import com.onepointsolution.onemarketplace.activity.HomeActivity;
 import com.onepointsolution.onemarketplace.app.Config;
 import com.onepointsolution.onemarketplace.utils.NotificationUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -94,7 +94,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationUtils.playNotificationSound();
             } else {
                 // app is in background, show the notification in notification tray
-                Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent resultIntent = new Intent(getApplicationContext(), HomeActivity.class);
                 resultIntent.putExtra("message", message);
 
                 // check for image attachment

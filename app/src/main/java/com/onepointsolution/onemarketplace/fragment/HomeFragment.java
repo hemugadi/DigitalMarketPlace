@@ -3,12 +3,28 @@ package com.onepointsolution.onemarketplace.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.onepointsolution.onemarketplace.R;
+import com.onepointsolution.onemarketplace.activity.WelcomeActivity;
+import com.onepointsolution.onemarketplace.adapter.AppInfoAdapter;
+import com.onepointsolution.onemarketplace.model.AppInfo;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +43,19 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ViewPager viewPager;
+    private HomePagerAdapter mHomePagerAdapter;
+    private LinearLayout dotsLayout;
+    private TextView[] dots;
+    private int[] layouts;
+
+    private Timer timer;
+    private int currentPosition = 0;
+    private int customPosition = 0;
+
+    RecyclerView recyclerView;
+    ArrayList arrayList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +94,40 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        viewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        dotsLayout = (LinearLayout) view.findViewById(R.id.layoutDots);
+
+
+        // layouts of all welcome sliders
+        // add few more layouts if you want
+        layouts = new int[]{
+                R.layout.welcome_slide1,
+                R.layout.welcome_slide2,
+                R.layout.welcome_slide3,
+                R.layout.welcome_slide4};
+
+        // adding bottom dots
+        addBottomDots(0);
+
+        mHomePagerAdapter = new HomePagerAdapter();
+        viewPager.setAdapter(mHomePagerAdapter);
+        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+        //createSlideShow();
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        arrayList = new ArrayList();
+        arrayList.add(new AppInfo("Order Food", R.drawable.ic_food, R.color.bg_screen1));
+        arrayList.add(new AppInfo("Latest News", R.drawable.ic_newspaper, R.color.bg_screen2));
+        arrayList.add(new AppInfo("Get Discounts", R.drawable.ic_discount, R.color.bg_screen3));
+        arrayList.add(new AppInfo("Go Travel", R.drawable.ic_travel, R.color.bg_screen4));
+
+        AppInfoAdapter adapter = new AppInfoAdapter(getContext().getApplicationContext(), arrayList);
+        recyclerView.setAdapter(adapter);
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(manager);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -78,6 +140,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+       // createSlideShow();
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -105,5 +168,102 @@ public class HomeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    //  viewpager change listener
+    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageSelected(int position) {
+            addBottomDots(position);
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+
+        }
+    };
+
+    private void addBottomDots(int currentPage) {
+        dots = new TextView[layouts.length];
+
+        int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
+        int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
+
+        dotsLayout.removeAllViews();
+        for (int i = 0; i < dots.length; i++) {
+            dots[i] = new TextView(getActivity());
+            dots[i].setText(Html.fromHtml("&#8226;"));
+            dots[i].setTextSize(35);
+            dots[i].setTextColor(colorsInactive[currentPage]);
+            dotsLayout.addView(dots[i]);
+        }
+
+        if (dots.length > 0)
+            dots[currentPage].setTextColor(colorsActive[currentPage]);
+    }
+
+    /**
+     * View pager adapter
+     */
+    public class HomePagerAdapter extends PagerAdapter {
+        private LayoutInflater layoutInflater;
+
+        public HomePagerAdapter() {
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View view = layoutInflater.inflate(layouts[position], container, false);
+            container.addView(view);
+
+            return view;
+        }
+
+        @Override
+        public int getCount() {
+            return layouts.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object obj) {
+            return view == obj;
+        }
+
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            View view = (View) object;
+            container.removeView(view);
+        }
+    }
+
+    private void createSlideShow(){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(currentPosition == layouts.length){
+                    currentPosition = 0;
+                    viewPager.setCurrentItem(currentPosition);
+                }
+            }
+        };
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(runnable);
+            }
+        },250,2500);
+
     }
 }

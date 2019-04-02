@@ -8,7 +8,7 @@
     android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/movies_layout"
+        android:id="@+id/article_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"

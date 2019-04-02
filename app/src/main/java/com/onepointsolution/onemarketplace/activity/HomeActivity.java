@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,15 +22,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.onepointsolution.onemarketplace.R;
 import com.onepointsolution.onemarketplace.fragment.HomeFragment;
-import com.onepointsolution.onemarketplace.fragment.MoviesFragment;
 import com.onepointsolution.onemarketplace.fragment.NewsFragment;
 import com.onepointsolution.onemarketplace.fragment.NotificationsFragment;
+import com.onepointsolution.onemarketplace.fragment.RestaurantsFragment;
 import com.onepointsolution.onemarketplace.fragment.SettingsFragment;
+import com.onepointsolution.onemarketplace.fragment.ShopFragment;
+import com.onepointsolution.onemarketplace.fragment.TravelFragment;
 import com.onepointsolution.onemarketplace.utils.CircleTransform;
 
 public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener,
-        NewsFragment.OnFragmentInteractionListener, MoviesFragment.OnFragmentInteractionListener,
-        SettingsFragment.OnFragmentInteractionListener,NotificationsFragment.OnFragmentInteractionListener{
+        RestaurantsFragment.OnFragmentInteractionListener, NewsFragment.OnFragmentInteractionListener,
+        ShopFragment.OnFragmentInteractionListener, TravelFragment.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener{
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
@@ -53,8 +55,10 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
 
     // tags used to attach the fragments
     private static final String TAG_HOME = "home";
-    private static final String TAG_NEWS = "news";
-    private static final String TAG_MOVIES = "movies";
+    public static final String TAG_FOOD = "food";
+    public static final String TAG_NEWS = "news";
+    public static final String TAG_SHOP = "shop";
+    public static final String TAG_TRAVEL = "travel";
     private static final String TAG_NOTIFICATIONS = "notifications";
     private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_HOME;
@@ -112,7 +116,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
 
-        navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
+        navigationView.getMenu().getItem(5).setActionView(R.layout.menu_dot);
     }
 
     private void loadHomeFragment() {
@@ -151,19 +155,28 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                 HomeFragment homeFragment = new HomeFragment();
                 return homeFragment;
             case 1:
+                // food fragment
+                RestaurantsFragment restaurantsFragment = new RestaurantsFragment();
+                return restaurantsFragment;
+            case 2:
                 // news fragment
                 NewsFragment newsFragment = new NewsFragment();
                 return newsFragment;
-            case 2:
-                // movies fragment
-                MoviesFragment moviesFragment = new MoviesFragment();
-                return moviesFragment;
             case 3:
+                // shop fragment
+                ShopFragment shopFragment = new ShopFragment();
+                return shopFragment;
+            case 4:
+                // travel fragment
+                TravelFragment travelFragment = new TravelFragment();
+                return travelFragment;
+
+            case 5:
                 // notifications fragment
                 NotificationsFragment notificationsFragment = new NotificationsFragment();
                 return notificationsFragment;
 
-            case 4:
+            case 6:
                 // settings fragment
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
@@ -192,20 +205,28 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_HOME;
                         break;
-                    case R.id.nav_news:
+                    case R.id.nav_food:
                         navItemIndex = 1;
+                        CURRENT_TAG = TAG_FOOD;
+                        break;
+                    case R.id.nav_news:
+                        navItemIndex = 2;
                         CURRENT_TAG = TAG_NEWS;
                         break;
-                    case R.id.nav_movies:
-                        navItemIndex = 2;
-                        CURRENT_TAG = TAG_MOVIES;
+                    case R.id.nav_shop:
+                        navItemIndex = 3;
+                        CURRENT_TAG = TAG_SHOP;
+                        break;
+                    case R.id.nav_travel:
+                        navItemIndex = 4;
+                        CURRENT_TAG = TAG_TRAVEL;
                         break;
                     case R.id.nav_notifications:
-                        navItemIndex = 3;
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_NOTIFICATIONS;
                         break;
                     case R.id.nav_settings:
-                        navItemIndex = 4;
+                        navItemIndex = 6;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
                     case R.id.nav_about_us:
@@ -278,7 +299,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
             getMenuInflater().inflate(R.menu.main, menu);
         }
 
-        if (navItemIndex == 3) {
+        if (navItemIndex == 5) {
             getMenuInflater().inflate(R.menu.notifications, menu);
         }
         return true;
@@ -301,6 +322,36 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(String tag) {
+        switch (tag) {
+            case TAG_HOME:
+                navItemIndex = 0;
+                CURRENT_TAG = TAG_HOME;
+                break;
+            case TAG_FOOD:
+                navItemIndex = 1;
+                CURRENT_TAG = TAG_FOOD;
+                break;
+            case TAG_NEWS:
+                navItemIndex = 2;
+                CURRENT_TAG = TAG_NEWS;
+                break;
+            case TAG_SHOP:
+                navItemIndex = 3;
+                CURRENT_TAG = TAG_SHOP;
+                break;
+            case TAG_TRAVEL:
+                navItemIndex = 4;
+                CURRENT_TAG = TAG_TRAVEL;
+                break;
+            default:
+                navItemIndex = 0;
+                CURRENT_TAG = TAG_HOME;
+        }
+        loadHomeFragment();
     }
 
     @Override

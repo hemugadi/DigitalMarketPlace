@@ -13,6 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.onepointsolution.onemarketplace.R;
+import com.onepointsolution.onemarketplace.activity.HomeActivity;
+import com.onepointsolution.onemarketplace.fragment.HomeFragment;
+import com.onepointsolution.onemarketplace.fragment.NewsFragment;
+import com.onepointsolution.onemarketplace.fragment.NotificationsFragment;
+import com.onepointsolution.onemarketplace.fragment.RestaurantsFragment;
+import com.onepointsolution.onemarketplace.fragment.SettingsFragment;
 import com.onepointsolution.onemarketplace.model.AppInfo;
 
 import java.util.ArrayList;
@@ -47,11 +53,9 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
 
         public void setData(AppInfo item) {
             this.item = item;
-
-            textView.setText(item.text);
-            imageView.setImageResource(item.drawable);
-            relativeLayout.setBackgroundColor(mContext.getResources().getColor(item.color));
-
+            textView.setText(item.getText());
+            imageView.setImageResource(item.getDrawable());
+            relativeLayout.setBackgroundColor(mContext.getResources().getColor(item.getColor()));
         }
     }
 
@@ -64,11 +68,11 @@ public class AppInfoAdapter extends RecyclerView.Adapter<AppInfoAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.setData(mValues.get(i));
+        final String tag = mValues.get(i).getTag();
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(mContext, LaunchAppActivity.class);
-                mContext.startActivity(intent);*/
+                ((HomeActivity)mContext).onFragmentInteraction(tag);
             }
         });
     }

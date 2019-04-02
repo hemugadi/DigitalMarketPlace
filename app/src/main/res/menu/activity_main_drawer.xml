@@ -6,15 +6,25 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/nav_home" />
+
+        <item
+            android:id="@+id/nav_food"
+            android:icon="@drawable/ic_food"
+            android:title="@string/nav_food" />
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_news_black_24dp"
             android:title="@string/nav_news" />
 
         <item
-            android:id="@+id/nav_movies"
-            android:icon="@drawable/ic_local_movies_black_24dp"
-            android:title="@string/nav_movies" />
+            android:id="@+id/nav_shop"
+            android:icon="@drawable/ic_discount"
+            android:title="@string/nav_shop" />
+
+        <item
+            android:id="@+id/nav_travel"
+            android:icon="@drawable/ic_travel"
+            android:title="@string/nav_travel" />
 
         <item
             android:id="@+id/nav_notifications"

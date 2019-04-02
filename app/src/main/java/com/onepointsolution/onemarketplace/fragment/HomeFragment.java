@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -18,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.onepointsolution.onemarketplace.R;
+import com.onepointsolution.onemarketplace.activity.HomeActivity;
 import com.onepointsolution.onemarketplace.activity.WelcomeActivity;
 import com.onepointsolution.onemarketplace.adapter.AppInfoAdapter;
 import com.onepointsolution.onemarketplace.model.AppInfo;
@@ -39,6 +42,11 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    public static final String TAG_FOOD = "food";
+    public static final String TAG_NEWS = "news";
+    public static final String TAG_SHOP = "shop";
+    public static final String TAG_TRAVEL = "travel";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -95,7 +103,12 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         viewPager = (ViewPager) view.findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) view.findViewById(R.id.layoutDots);
 
@@ -114,33 +127,32 @@ public class HomeFragment extends Fragment {
         mHomePagerAdapter = new HomePagerAdapter();
         viewPager.setAdapter(mHomePagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
-        //createSlideShow();
-
+        createSlideShow();
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         arrayList = new ArrayList();
-        arrayList.add(new AppInfo("Order Food", R.drawable.ic_food, R.color.bg_screen1));
-        arrayList.add(new AppInfo("Latest News", R.drawable.ic_newspaper, R.color.bg_screen2));
-        arrayList.add(new AppInfo("Get Discounts", R.drawable.ic_discount, R.color.bg_screen3));
-        arrayList.add(new AppInfo("Go Travel", R.drawable.ic_travel, R.color.bg_screen4));
+        arrayList.add(new AppInfo(TAG_FOOD,"Order Food", R.drawable.ic_food, R.color.bg_screen1));
+        arrayList.add(new AppInfo(TAG_NEWS,"Latest News", R.drawable.ic_newspaper, R.color.bg_screen2));
+        arrayList.add(new AppInfo(TAG_SHOP,"Shop Online", R.drawable.ic_discount, R.color.bg_screen3));
+        arrayList.add(new AppInfo(TAG_TRAVEL,"Go Travel", R.drawable.ic_travel, R.color.bg_screen4));
 
-        AppInfoAdapter adapter = new AppInfoAdapter(getContext().getApplicationContext(), arrayList);
+        AppInfoAdapter adapter = new AppInfoAdapter(getActivity(), arrayList);
         recyclerView.setAdapter(adapter);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
-        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(String tag) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(tag);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-       // createSlideShow();
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -167,7 +179,7 @@ public class HomeFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(String tag);
     }
 
     //  viewpager change listener
@@ -252,7 +264,7 @@ public class HomeFragment extends Fragment {
             public void run() {
                 if(currentPosition == layouts.length){
                     currentPosition = 0;
-                    viewPager.setCurrentItem(currentPosition);
+                    viewPager.setCurrentItem(currentPosition++,true);
                 }
             }
         };

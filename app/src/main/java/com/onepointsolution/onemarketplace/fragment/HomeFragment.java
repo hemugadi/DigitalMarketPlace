@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
+    private Context mContext;
 
     private Timer timer;
     private int currentPosition = 0;
@@ -135,7 +136,7 @@ public class HomeFragment extends Fragment {
         arrayList.add(new AppInfo(TAG_SHOP,"Shop Online", R.drawable.ic_discount, R.color.bg_screen3));
         arrayList.add(new AppInfo(TAG_TRAVEL,"Go Travel", R.drawable.ic_travel, R.color.bg_screen4));
 
-        AppInfoAdapter adapter = new AppInfoAdapter(getActivity(), arrayList);
+        AppInfoAdapter adapter = new AppInfoAdapter(mContext, arrayList);
         recyclerView.setAdapter(adapter);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
@@ -152,6 +153,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
 
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -204,12 +206,12 @@ public class HomeFragment extends Fragment {
     private void addBottomDots(int currentPage) {
         dots = new TextView[layouts.length];
 
-        int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
-        int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
+        int[] colorsActive = mContext.getResources().getIntArray(R.array.array_dot_active);
+        int[] colorsInactive = mContext.getResources().getIntArray(R.array.array_dot_inactive);
 
         dotsLayout.removeAllViews();
         for (int i = 0; i < dots.length; i++) {
-            dots[i] = new TextView(getActivity());
+            dots[i] = new TextView(mContext);
             dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(35);
             dots[i].setTextColor(colorsInactive[currentPage]);
@@ -231,7 +233,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(layouts[position], container, false);
             container.addView(view);
@@ -264,8 +266,8 @@ public class HomeFragment extends Fragment {
             public void run() {
                 if(currentPosition == layouts.length){
                     currentPosition = 0;
-                    viewPager.setCurrentItem(currentPosition++,true);
                 }
+                viewPager.setCurrentItem(currentPosition++,true);
             }
         };
 

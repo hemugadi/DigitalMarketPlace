@@ -46,6 +46,7 @@ public class NewsFragment extends Fragment {
     private final static String NEWS_API_KEY = "c0c9714034614fbb858a064d1129d23a";
     private final static String COUNTRY_ISO ="in";
 
+    private Context mContext;
     private TextView mTextViewEmpty;
     private ProgressBar mProgressBarLoading;
     private ImageView mImageViewEmpty;
@@ -101,7 +102,7 @@ public class NewsFragment extends Fragment {
         mImageViewEmpty = (ImageView)view.findViewById(R.id.imageViewEmpty);
         mProgressBarLoading = (ProgressBar)view.findViewById(R.id.progressBarLoading);
 
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
@@ -114,7 +115,7 @@ public class NewsFragment extends Fragment {
             public void onResponse(Call<ArticlesResponse> call, Response<ArticlesResponse> response) {
                 int statusCode = response.code();
                 List<Article> news = response.body().getArticles();
-                mRecyclerView.setAdapter(new ArticleAdapter(news, R.layout.list_item_article, getActivity()));
+                mRecyclerView.setAdapter(new ArticleAdapter(news, R.layout.list_item_article, mContext));
             }
 
             @Override
@@ -137,6 +138,8 @@ public class NewsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

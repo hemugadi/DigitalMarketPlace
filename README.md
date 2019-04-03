@@ -12,7 +12,7 @@ Features
 
 4) Book a home service
 
-![image](https://github.com/hemugadi/DigitalMarketPlace/blob/dev_digi_market/home_screen.png)
+![image](https://github.com/hemugadi/DigitalMarketPlace/blob/dev_digi_market/home_screen.png | width=200)
 
 
 

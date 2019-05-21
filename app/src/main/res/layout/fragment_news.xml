@@ -20,8 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="gone" />
+        android:layout_centerVertical="true" />
 
     <ImageView
         android:id="@+id/imageViewEmpty"
@@ -36,9 +35,8 @@
         android:id="@+id/textViewEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageViewEmpty"
+        android:layout_below="@+id/progressBarLoading"
         android:layout_centerHorizontal="true"
-        android:text="@string/loading"
-        android:visibility="gone" />
+        android:text="@string/loading" />
 
 </FrameLayout>

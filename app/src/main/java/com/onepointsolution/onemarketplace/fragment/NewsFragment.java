@@ -115,7 +115,12 @@ public class NewsFragment extends Fragment {
             public void onResponse(Call<ArticlesResponse> call, Response<ArticlesResponse> response) {
                 int statusCode = response.code();
                 List<Article> news = response.body().getArticles();
-                mRecyclerView.setAdapter(new ArticleAdapter(news, R.layout.list_item_article, mContext));
+                if (news != null){
+                    mProgressBarLoading.setVisibility(View.GONE);
+                    mTextViewEmpty.setVisibility(View.GONE);
+                } else {
+                    mRecyclerView.setAdapter(new ArticleAdapter(news, R.layout.list_item_article, mContext));
+                }
             }
 
             @Override

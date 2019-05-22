@@ -14,7 +14,7 @@ Features
 
 <img src="https://github.com/hemugadi/DigitalMarketPlace/blob/dev_digi_market/home_screen.png" width="200"> <img src="https://github.com/hemugadi/DigitalMarketPlace/blob/dev_digi_market/news_fragment.png" width="200"> <img src="https://github.com/hemugadi/DigitalMarketPlace/blob/dev_digi_market/article_details.png" width="200">
 
-3) Shop online 
+3) Shop grocery online 
 
 4) Book a home service 
 
